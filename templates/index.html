@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ChatBot</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<!-- 🔹 NAVBAR START -->
+<nav class="navbar">
+  <div class="nav-title">🤖 SmartBot</div>
+  <div class="nav-icons">
+    <!-- 🔸 Theme Toggle Switch in Navbar -->
+    <label class="nav-toggle-switch">
+      <input type="checkbox" id="theme-toggle">
+      <span class="slider">
+        <span class="icon sun">🌞</span>
+        <span class="icon moon">🌜</span>
+      </span>
+    </label>
+    <!-- 🔸 Profile Icon -->
+    <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="User" class="user-icon">
+  </div>
+</nav>
+<!-- 🔹 NAVBAR END -->
+
+<!-- 🔹 Chat Area -->
+<div class="chat-container">
+  <div class="chat-header">
+    <h2>🤖 Smart Bot</h2>
+  </div>
+  <div class="chat-box" id="chat-box">
+    <div class="bot-message">
+      <div class="timestamp" id="first-time"></div>
+    </div>
+  </div>
+  <div class="input-area">
+    <input type="text" id="user-input" placeholder="Type your message here..." autocomplete="off">
+    <button id="send-btn">➤</button>
+  </div>
+</div>
+
+<script src="/static/script.js"></script>
+</body>
+</html>
