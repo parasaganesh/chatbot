@@ -1,41 +1,40 @@
 from flask import Flask, render_template, request, jsonify
-import requests
+import google.generativeai as genai
 
-app = Flask(__name__, template_folder='templates')  # Ensures HTML loads from templates/
+app = Flask(__name__, template_folder='templates')
 
-# Your original function - unchanged
-def get_gpt_reply(message):
+# ✅ Replace with your actual Gemini API key
+GOOGLE_API_KEY = "AIzaSyBi-u0kJEwnDK8IIwq8IDL7QeziRycSkbY"
+
+# ✅ Configure Gemini with the API key
+genai.configure(api_key=GOOGLE_API_KEY)
+
+# ✅ Choose a supported model
+model = genai.GenerativeModel("gemini-1.5-flash")  # You can also use "gemini-1.0-pro" or "gemini-1.5-pro"
+
+# Function to get a response from Gemini
+def get_gemini_reply(message):
     try:
-        response = requests.post(
-            "https://openrouter.ai/api/v1/chat/completions",
-            headers={
-                "Authorization": "Bearer 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",
-                "Content-Type": "application/json"
-            },
-            json={
-                "model": "openai/gpt-3.5-turbo",
-                "messages": [
-                    {"role": "user", "content": message}
-                ]
-            }
-        )
-        data = response.json()
-        return data["choices"][0]["message"]["content"]
+        response = model.generate_content(message)
+        return response.text.strip()
     except Exception as e:
-        return f"⚠️ Error: {str(e)}"
+        return f"⚠️ Gemini Error: {str(e)}"
 
+# Route for the chat interface
 @app.route('/')
 def index():
-    return render_template('index.html')  # Loads upgraded UI
+    return render_template('index.html')  # Load the chatbot UI
 
+# Endpoint to handle chat requests
 @app.route('/chat', methods=['POST'])
 def chat():
     user_msg = request.json.get('message')
     if not user_msg:
         return jsonify({"reply": "⚠️ No message received"}), 400
 
-    bot_reply = get_gpt_reply(user_msg)
-    return jsonify({"reply": bot_reply})  # Passes reply back to frontend
+    bot_reply = get_gemini_reply(user_msg)
+    return jsonify({"reply": bot_reply})
 
+# Start the Flask app
 if __name__ == '__main__':
     app.run(debug=True)
