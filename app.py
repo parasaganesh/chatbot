@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 import google.generativeai as genai
-
+import os
 app = Flask(__name__, template_folder='templates')
 
 # ✅ Replace with your actual Gemini API key
@@ -37,4 +37,5 @@ def chat():
 
 # Start the Flask app
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=True)
